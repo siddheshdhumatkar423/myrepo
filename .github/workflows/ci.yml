@@ -15,4 +15,9 @@ jobs:
       # Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v2
+        # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '10'
 
