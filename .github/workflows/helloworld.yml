@@ -1,16 +1,39 @@
 name: Node.js CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: '20.x'
-      
+          node-version: '14'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run tests
+      - name: Run tests
+        run: npm test
+
+      # Optional: Step 5: Upload test results (if using a test reporter)
+      # - name: Upload test results
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: test-results
+      #     path: test-results/
