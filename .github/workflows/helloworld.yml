@@ -1,34 +1,22 @@
-name: Node.js CI
+name: Python package
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["pypy3.10", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
-      # Step 1: Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Step 2: Set up Node.js environment
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          node-version: '14'
+          python-version: ${{ matrix.python-version }}
+      # You can test your matrix by printing the current Python version
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
 
-      
-
-      
-      # Optional: Step 5: Upload test results (if using a test reporter)
-      # - name: Upload test results
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: test-results
-      #     path: test-results/
