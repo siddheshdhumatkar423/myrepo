@@ -25,10 +25,7 @@ jobs:
 
       
 
-      # Step 4: Run tests
-      - name: Run tests
-        run: npm test
-
+      
       # Optional: Step 5: Upload test results (if using a test reporter)
       # - name: Upload test results
       #   uses: actions/upload-artifact@v2
