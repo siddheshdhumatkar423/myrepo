@@ -1,8 +1,21 @@
-name: "siddhesh1323"
-on: push
+name: Deploy Smart Contract
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the main branch
+
 jobs:
-  my-job:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: my-steps34
-        run: echo "im verylearning in the project"
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      
