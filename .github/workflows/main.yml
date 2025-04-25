@@ -1,0 +1,68 @@
+name: Full Stack CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: myapp
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: myapp
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 🔧 Setup Node.js (for frontend + backend)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # 📦 Install backend dependencies
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm install
+
+      # 🧪 Run backend tests
+      - name: Run backend tests
+        working-directory: ./backend
+        run: npm test
+
+      # 📦 Install frontend dependencies
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      # 🧪 Run frontend tests / build
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      # 🚀 Optional: Deploy step (e.g., upload to Firebase, AWS, etc.)
+      - name: Deploy
+        run: echo "Deploying..."
